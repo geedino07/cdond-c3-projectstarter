@@ -125,7 +125,7 @@ jobs:
     docker:
       - image: cimg/base
     steps:
-      - slack/nofify:
+      - slack/notify:
           event: pass
           channel: cici-pipeline-proj3
           template: success_tagged_deployment_1
