@@ -1,4 +1,15 @@
 version: 2.1
+
+orbs:
+  slack: circleci/slack@4.9.3
+
+commands:
+  notify_on_failure:
+    steps:
+      - slack/nofify:
+          event: fail
+          channel: cicd-pipeline-proj3
+          template: basic_fail_1
             
 jobs:
   build-frontend:
@@ -19,6 +30,7 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+      - notify_on_failure
 
   build-backend:
     docker:
@@ -38,6 +50,7 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+      - notify_on_failure
 
   test-frontend:
     docker:
@@ -53,10 +66,7 @@ jobs:
             cd frontend
             npm install
             npm run test
-            # exit 1# Restore from cache
-      - save_cache:
-          paths: [frontend/node_modules]
-          key: frontend-build
+      - notify_on_failure
 
                 
   test-backend:
@@ -76,9 +86,7 @@ jobs:
              cd backend
              npm install
              npm run test
-      - save_cache:
-          paths: [backend/node_modules]
-          key: backend-build
+      - notify_on_failure
 
   scan-frontend:
     docker: 
@@ -96,9 +104,7 @@ jobs:
             cd frontend
             npm install
             npm audit fix --audit-level=critical
-      - save_cache:
-          paths: [frontend/node_modules]
-          key: frontend-build
+      - notify_on_failure
 
   scan-backend:
     docker:
@@ -113,10 +119,16 @@ jobs:
               cd backend
               npm install
               npm audit fix --audit-level=critical
-      - save_cache:
-          paths: [backend/node_modules]
-          key: backend-build
+      - notify_on_failure
 
+  notify_on_success:
+    docker:
+      - image: cimg/base
+    steps:
+      - slack/nofify:
+          event: pass
+          channel: cici-pipeline-proj3
+          template: success_tagged_deployment_1
 
 workflows:
   default:
@@ -131,6 +143,13 @@ workflows:
            requires: [build-backend]
       - scan-frontend:
            requires: [build-frontend]
+      - notify_on_success:
+            requires:
+              - test-frontend
+              - test-backend
+              - scan-frontend
+              - scan-backend
+
       # - deploy-infrastructure:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       #     filters:
