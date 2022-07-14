@@ -8,7 +8,7 @@ commands:
     steps:
       - slack/notify:
           event: fail
-          channel: cicd-pipeline-proj3
+          channel: 03-cloud-devops
           template: basic_fail_1
             
 jobs:
