@@ -6,7 +6,7 @@ orbs:
 commands:
   notify_on_failure:
     steps:
-      - slack/nofify:
+      - slack/notify:
           event: fail
           channel: cicd-pipeline-proj3
           template: basic_fail_1
