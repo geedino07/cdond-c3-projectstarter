@@ -128,7 +128,7 @@ jobs:
       - slack/notify:
           event: pass
           channel: 03-cloud-devops
-          template: success_tagged_deployment_1
+          template: basic_success_1
 
 workflows:
   default:
