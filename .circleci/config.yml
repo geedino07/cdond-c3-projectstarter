@@ -179,15 +179,17 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update nodejs ansible tar npm curl gzip aws-cli
-      # - run: yum install -y tar gzip
-      # - run: pip install awscli
+            apk add --update ansible
+            # apk add --update nodejs ansible tar npm curl gzip aws-cli
+
+      - run: yum install -y tar gzip
+      - run: pip install awscli
       - run:
           name: Configure server
           command: |
               cd .circleci/ansible
               ansible-playbook -i inventory.txt configure-server.yml
-      # Here's where you will add some code to rollback on failure    
+      - destroy_environment       # Here's where you will add some code to rollback on failure    
 
   notify_on_success:
     docker:
@@ -222,9 +224,9 @@ workflows:
            requires: [test-frontend, test-backend, scan-frontend, scan-backend]
            filters:
              branches:
-              only: [master]    
+              only: [master]
       - configure-infrastructure:
-           requires: [deploy-infrastructure]
+          requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
       # - deploy-frontend:
