@@ -181,7 +181,6 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["e1:08:a0:c5:07:2a:65:ff:23:64:f0:7c:19:9f:ad:69"] 
-      # attach workspace
       - attach_workspace:
           at: ~/
       - run:
@@ -194,14 +193,13 @@ jobs:
       - run:
           name: confirm inventory iP address
           command: |
-            ls -a
-            ls ~/project/.circleci/ansible
             cat ~/project/.circleci/ansible/inventory.txt
       # - run: yum install -y tar gzip
   
       - run:
           name: Configure server
           command: |
+              pwd
               cd .circleci/ansible
               ansible-playbook -i inventory.txt configure-server.yml
       - destroy_environment       # Here's where you will add some code to rollback on failure    
