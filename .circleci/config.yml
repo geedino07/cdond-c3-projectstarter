@@ -132,11 +132,9 @@ jobs:
               npm audit fix --audit-level=critical
       - notify_on_failure
 
-
   deploy-infrastructure:
     docker: 
       - image: amazon/aws-cli
-      # Docker image here that supports AWS CLI
     steps:
       - checkout
       - run:
@@ -188,18 +186,18 @@ workflows:
            requires: [build-backend]
       - scan-frontend:
            requires: [build-frontend]
-      - notify_on_success:
-            requires:
-              - test-frontend
-              - test-backend
-              - scan-frontend
-              - scan-backend
-              - deploy-infrastructure
+      # - notify_on_success:
+      #       requires:
+      #         - test-frontend
+      #         - test-backend
+      #         - scan-frontend
+      #         - scan-backend
+      #         - deploy-infrastructure
       - deploy-infrastructure:
            requires: [test-frontend, test-backend, scan-frontend, scan-backend]
            filters:
              branches:
-              only: [test-feature-branch]
+              only: [master]
       
       # - configure-infrastructure:
       #     requires: [deploy-infrastructure]
