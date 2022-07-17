@@ -184,20 +184,21 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
-
-      - run:
-          name: confirm inventory iP address
-          command: |
-            cat project/.circleci/ansible/inventory.txt
-            ls project/.circleci/ansible
       - run:
           name: Install dependencies
           command: |
             apk add --update ansible tar gzip
             # apk add --update nodejs ansible tar npm curl gzip aws-cli
-
-      # - run: yum install -y tar gzip
       - run: pip install awscli
+
+      - run:
+          name: confirm inventory iP address
+          command: |
+            ls -a
+            ls ~/project/.circleci/ansible
+            cat ~/project/.circleci/ansible/inventory.txt
+      # - run: yum install -y tar gzip
+  
       - run:
           name: Configure server
           command: |
