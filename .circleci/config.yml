@@ -158,7 +158,7 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name = tag:project, Values=udapeople" --output text >  ~/inventory.txt
+            --filters "Name = tag:project, Values=udapeople" --output text >> .circleci/ansible/inventory.txt
       - run:
           name: confirm PublicIpAddress
           command: |
@@ -183,14 +183,20 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
+
+      - run:
+          name: confirm inventory iP address
+          command: |
+            cat project/.circleci/ansible/inventory.txt
+            ls project/.circleci/ansible
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible tar gzip aws-cli
+            apk add --update ansible tar gzip
             # apk add --update nodejs ansible tar npm curl gzip aws-cli
 
       # - run: yum install -y tar gzip
-      # - run: pip install awscli
+      - run: pip install awscli
       - run:
           name: Configure server
           command: |
