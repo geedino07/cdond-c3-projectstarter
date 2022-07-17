@@ -164,8 +164,9 @@ jobs:
           command: |
             pwd
             ls
-            cat ~/inventory.txt
-            ls ~/
+            ls ~/project
+            ls ~/project/.circleci
+            ls ~/project/.circleci/ansible
       - persist_to_workspace:
           root: ~/
           paths:
