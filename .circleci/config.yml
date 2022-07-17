@@ -173,7 +173,6 @@ jobs:
             - project/.circleci/ansible/inventory.txt
       - destroy_environment # Here's where you will add some code to rollback on failure  
 
-
   configure-infrastructure:
     docker:
       - image: python:3.7-alpine3.11    # Docker image here that supports Ansible
@@ -189,13 +188,10 @@ jobs:
             apk add --update ansible tar gzip
             # apk add --update nodejs ansible tar npm curl gzip aws-cli
       - run: pip install awscli
-
       - run:
           name: confirm inventory iP address
           command: |
             cat ~/project/.circleci/ansible/inventory.txt
-      # - run: yum install -y tar gzip
-  
       - run:
           name: Configure server
           command: |
@@ -238,8 +234,8 @@ workflows:
            filters:
              branches:
               only: [master]
-     #  - configure-infrastructure:
-       #   requires: [deploy-infrastructure]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
       # - deploy-frontend:
