@@ -159,6 +159,13 @@ jobs:
           command: |
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --filters "Name = tag:project, Values=udapeople" --output text >  ~/inventory.txt
+      - run:
+          name: confirm PublicIpAddress
+          command: |
+            pwd
+            ls
+            cat ~/inventory.txt
+            ls ~/
       - persist_to_workspace:
           root: ~/
           paths:
