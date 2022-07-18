@@ -205,10 +205,6 @@ jobs:
       - image: circleci/node:13.8.0    # Docker image here that supports NodeJS
     steps:
       - checkout 
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update tar gzip openssh
       - run: pip install awscli
       - run:
           name: Run migrations
