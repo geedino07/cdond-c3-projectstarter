@@ -208,7 +208,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible tar gzip openssh
+            apk add --update tar gzip openssh
       - run: pip install awscli
       - run:
           name: Run migrations
