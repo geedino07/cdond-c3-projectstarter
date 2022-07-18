@@ -206,6 +206,11 @@ jobs:
     steps:
       - checkout 
       - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible tar gzip openssh
+      - run: pip install awscli
+      - run:
           name: Run migrations
           command: |
             cd backend
