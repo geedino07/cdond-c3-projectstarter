@@ -227,7 +227,7 @@ jobs:
           name: confirming migration_dump text
           command: |
             cat ~/project/backend/migrations_dump.txt
-            echo ${CIRCLE_WORKFLOW_ID:0:7}
+            echo ${CIRCLE_WORKFLOW_ID:0:6}
 
       - destroy_environment           # Here's where you will add some code to rollback on failure    
 
