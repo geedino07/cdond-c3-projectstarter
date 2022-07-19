@@ -204,8 +204,12 @@ jobs:
     docker:
       - image: cimg/node:13.8.0    # Docker image here that supports NodeJS
     steps:
-      - checkout 
-      - run: pip install awscli
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update awscli
+      # - run: pip install awscli
       - run:
           name: Run migrations
           command: |
