@@ -205,10 +205,6 @@ jobs:
       - image: sleavely/node-awscli:14.x    # Docker image here that supports NodeJS
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update awscli
       # - run: pip install awscli
       - run:
           name: Run migrations
