@@ -1,5 +1,4 @@
 ---
-
 - name: "Add Node.js from source"
   become: true
   shell: |
@@ -10,7 +9,7 @@
     name: ["nodejs"]
     state: latest
     update_cache: yes
-    
+
 - name: "install pm2 globally"
   npm:
     name: pm2
