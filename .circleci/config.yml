@@ -221,12 +221,13 @@ jobs:
       - attach_workspace:
           at: ~/
       - install_ansible
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       apk add --update ansible tar gzip openssh
-      #       apk add --update nodejs ansible tar npm curl gzip aws-cli
-      - run: pip install aws-cli
+      - run:
+          name: Install dependencies
+          command: |
+             apk add --update aws-cli
+            # apk add --update ansible tar gzip openssh
+            # apk add --update nodejs ansible tar npm curl gzip aws-cli
+      # - run: pip install aws-cli
       - run:
           name: confirm inventory iP address
           command: |
