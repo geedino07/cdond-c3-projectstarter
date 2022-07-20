@@ -230,7 +230,7 @@ jobs:
           name: confirm inventory iP address
           command: |
             cat ~/project/.circleci/ansible/inventory.txt
-      - run:s
+      - run:
           name: Configure server
           command: |
               cd .circleci/ansible
