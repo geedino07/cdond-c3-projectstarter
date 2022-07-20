@@ -10,6 +10,18 @@ commands:
           event: fail
           channel: 03-cloud-devops
           template: basic_fail_1
+  
+  install_ansible:
+    description: Install Ansible 
+    steps:
+      - run:
+          name: Install Ansible
+          command: |
+            sudo apt update
+            sudo apt install software-properties-common-y
+            sudo add-apt-repository --yes --update ppa:ansible/ansible
+            sudo apt install ansible -y
+
 
   destroy_environment:
     steps:
@@ -195,17 +207,18 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: python:3.7-alpine3.11    # Docker image here that supports Ansible
+      - image: cimg/base:stable    # Docker image here that supports Ansible
     steps:
       - checkout
       - add_ssh_keys:
           fingerprints: ["e1:08:a0:c5:07:2a:65:ff:23:64:f0:7c:19:9f:ad:69"] 
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible tar gzip openssh
+      - install_ansible
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       apk add --update ansible tar gzip openssh
             # apk add --update nodejs ansible tar npm curl gzip aws-cli
       - run: pip install awscli
       - run:
@@ -217,6 +230,7 @@ jobs:
           command: |
               pwd
               cd .circleci/ansible
+              cat inventory.txt
               ansible-playbook -i inventory.txt configure-server.yml
       - destroy_environment       # Here's where you will add some code to rollback on failure  
 
