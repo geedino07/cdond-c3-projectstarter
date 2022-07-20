@@ -235,12 +235,12 @@ jobs:
       - image: amazon/aws-cli           # Docker image here that supports AWS CLI
     steps:
       - checkout 
-      - run: yum install -y tar gzip
-      - run:
-          name: Install dependencies
-          command: |
+      - run: yum install -y tar gzip npm ansible nodejs
+      # - run:
+       #   name: Install dependencies
+       #   command: |
             # npm install
-            apk add --update ansible npm aws-cli gzip openssh nodejs
+           # apk add --update ansible npm gzip openssh nodejs
             # apk add --update nodejs ansible tar npm curl gzip aws-cli
       - run:
           name: Get backend url
