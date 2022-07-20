@@ -4,10 +4,17 @@
   shell: |
     # curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
     wget -qO- https://deb.nodesource.com/setup_13.x
+
+- name: "upgrade packages."
+  become: true
+  apt:
+    upgrade: "yes"
+
+
 - name: "install Node.js 13"
   become: true
   apt:
-    name: ["nodejs"]
+    name: ["nodejs", "npm"]
     state: latest
     update_cache: yes
 
@@ -24,4 +31,9 @@
   copy:
     src: myenv.sh
     dest: /etc/profile.d/
+
+- name: "upgrade packages."
+  become: true
+  apt:
+    upgrade: "yes"
 
