@@ -221,16 +221,16 @@ jobs:
       - attach_workspace:
           at: ~/
       - install_ansible
-      - run:
-          name: Install dependencies
-          command: |
+      # - run:
+      #     name: Install dependencies
+      #     command: |
             # apk add --update nodejs ansible tar npm curl gzip aws-cli
       # - run: pip install aws-cli
       - run:
           name: confirm inventory iP address
           command: |
             cat ~/project/.circleci/ansible/inventory.txt
-      - run:
+      - run:s
           name: Configure server
           command: |
               cd .circleci/ansible
