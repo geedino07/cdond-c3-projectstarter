@@ -294,7 +294,7 @@ jobs:
           fingerprints: ["e1:08:a0:c5:07:2a:65:ff:23:64:f0:7c:19:9f:ad:69"] 
       - attach_workspace:
           at: ~/
-      - run: yum install -y tar gzip
+      - run: apt install -y tar gzip
       # - run: yum install -y npm 
       - install_awscli
       - install_nodejs
