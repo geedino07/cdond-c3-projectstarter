@@ -17,21 +17,14 @@
     name: ["nodejs"]
     state: latest
     update_cache: yes
-  
-- name: "npm"
-  become: true
-  apt:
-    name: ["npm"]
-    state: latest
-    update_cache: yes
 
-- name: "install pm2"
+- name: "install pm2 globally"
   become: true
   npm:
     name: pm2
     global: yes
-    production: yes
-    state: present
+    # production: yes
+    # state: present
 
 - name: "move env variables to /etc/profile.d/"
   become: true
