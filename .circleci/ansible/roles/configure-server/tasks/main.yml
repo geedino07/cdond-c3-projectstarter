@@ -32,8 +32,3 @@
     src: myenv.sh
     dest: /etc/profile.d/
 
-- name: "upgrade packages."
-  become: true
-  apt:
-    upgrade: "yes"
-

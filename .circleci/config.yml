@@ -22,6 +22,16 @@ commands:
             sudo add-apt-repository --yes --update ppa:ansible/ansible
             sudo apt install ansible -y
 
+  install_awscli:
+    description: Install Aws Cli
+    steps:
+      - run:
+          name: Install AWS Cli
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
   destroy_environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID
     parameters:
@@ -221,6 +231,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - install_ansible
+      - install_awscli
       # - run:
       #     name: Install dependencies
       #     command: |
@@ -273,9 +284,9 @@ jobs:
       - image: sleavely/node-awscli:14.x           # Docker image here that supports AWS CLI
     steps:
       - checkout 
-      - run: yum install -y tar gzip
-      - run: yum install -y npm 
-      - run: yum install -y ansible 
+      - run:  install -y tar gzip
+      - run:  install -y npm 
+      - install_ansible  
       # - run:
        #   name: Install dependencies
        #   command: |
