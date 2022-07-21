@@ -260,6 +260,7 @@ jobs:
       - image: circleci/node:13.8.0    # Docker image here that supports NodeJS
     steps:
       - checkout
+      - install_awscli
       - run:
           name: Run migrations
           command: |
@@ -274,7 +275,7 @@ jobs:
                   # If you are using memstash.io, generate the token "7933fe63-4687-4fa1-8426-aa25aa1730ec" on the website
                   # curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
                   # If you are using kvdb.io, generate the bucket ID "9GE4jRtKznmVKRfvdBABBe" in your local terminal first
-                  curl https://kvdb.io/S3PHD4fDhjYCxQmN9BkJ9r/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
+                  curl https://kvdb.io/S3PHD4fDhjYCxQmN9BkJ9r/migration_$\{CIRCLE_WORKFLOW_ID:0:7\} -d '1'
               fi
       - run:
           name: confirming migration_dump text
