@@ -295,7 +295,6 @@ jobs:
           fingerprints: ["e1:08:a0:c5:07:2a:65:ff:23:64:f0:7c:19:9f:ad:69"] 
       - attach_workspace:
           at: ~/
-      - run: apt install -y tar gzip
       # - run: yum install -y npm 
       - install_awscli
       - install_nodejs
@@ -342,10 +341,6 @@ jobs:
           fingerprints: ["e1:08:a0:c5:07:2a:65:ff:23:64:f0:7c:19:9f:ad:69"]  # Add ssh keys with fingerprint
       - attach_workspace:                                                    # attach workspace
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update tar npm curl gzip 
       - install_awscli
       - install_nodejs
       - install_ansible 
@@ -406,8 +401,8 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
            requires: [run-migrations]
-      #- deploy-backend:
-      #     requires: [run-migrations]
+      - deploy-backend:
+           requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
