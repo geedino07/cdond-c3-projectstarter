@@ -219,9 +219,6 @@ jobs:
       - run:
           name: confirm PublicIpAddress
           command: |
-            pwd
-            ls
-            ls ~/project
             ls ~/project/.circleci
             ls ~/project/.circleci/ansible
       - persist_to_workspace:
