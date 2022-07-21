@@ -3,7 +3,7 @@
   become: true
   shell: |
     # curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-    wget -qO- https://deb.nodesource.com/setup_13.x
+    wget -qO- https://deb.nodesource.com/setup_13.x | sudo -E bash -
 
 - name: "upgrade packages."
   become: true

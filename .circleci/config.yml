@@ -32,6 +32,15 @@ commands:
             unzip awscliv2.zip
             sudo ./aws/install
 
+  install_nodejs:
+    description: Install Node.js 13
+    steps:
+      - run:
+          name: Install Node.js
+          command: |
+            curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            sudo apt install -y nodejs
+
   destroy_environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID
     parameters:
@@ -281,11 +290,17 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli           # Docker image here that supports AWS CLI
+      - image: cimg/base:stable           # Docker image here that supports AWS CLI
     steps:
       - checkout 
+      - add_ssh_keys:
+          fingerprints: ["e1:08:a0:c5:07:2a:65:ff:23:64:f0:7c:19:9f:ad:69"] 
+      - attach_workspace:
+          at: ~/
       - run: yum install -y tar gzip
-      - run: yum install -y npm 
+      # - run: yum install -y npm 
+      - install_awscli
+      - install_nodejs
       - install_ansible  
       # - run:
        #   name: Install dependencies
@@ -311,11 +326,14 @@ jobs:
           command: |
             # your code here
             cd frontend
+            sudo npm install -g npm@latest
+            rm -rf node_modules
             npm install
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - destroy_environment # Here's where you will add some code to rollback on failure 
+      - revert-migrations
 
   notify_on_success:
     docker:
@@ -357,8 +375,8 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
            requires: [run-migrations]
-      # - deploy-backend:
-      #     requires: [run-migrations]
+      - deploy-backend:
+           requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
