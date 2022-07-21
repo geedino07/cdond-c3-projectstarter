@@ -281,11 +281,11 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: sleavely/node-awscli:14.x           # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli           # Docker image here that supports AWS CLI
     steps:
       - checkout 
-      - run:  install -y tar gzip
-      - run:  install -y npm 
+      - run: yum install -y tar gzip
+      - run: yum install -y npm 
       - install_ansible  
       # - run:
        #   name: Install dependencies
