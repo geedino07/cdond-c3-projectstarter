@@ -15,7 +15,7 @@
 
 - name: "Executing Node app with PM2"
   shell: |
-    cd ~/backend-app
+    cd ~/backend-app/dist
     cd ../
     npm install
     npm run build
