@@ -1,6 +1,6 @@
 - name: "creates backend app directory"
   file:
-    path: ~/backend-app
+    path: ~/backend
     state: directory
 
 - name: "Unarchive backend files"
@@ -10,12 +10,12 @@
 
 - name: "Installing Node Dependencies"
   shell: |
-    cd ~/backend-app
+    cd ~/backend
     npm i
 
 - name: "Executing Node app with PM2"
   shell: |
-    cd ~/backend-app/dist
+    cd ~/backend/dist
     cd ../
     npm install
     npm run build

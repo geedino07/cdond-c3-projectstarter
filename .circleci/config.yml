@@ -358,8 +358,8 @@ jobs:
             echo "Contents  of the inventory.txt file is ----------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
-      - destroy_environment # Here's where you will add some code to rollback on failure 
-      - revert-migrations # Here's where you will add some code to rollback on failure  
+      # - destroy_environment # Here's where you will add some code to rollback on failure 
+      # - revert-migrations # Here's where you will add some code to rollback on failure  
 
   smoke-test:
     docker:
@@ -485,13 +485,6 @@ workflows:
            requires: [build-backend]
       - scan-frontend:
            requires: [build-frontend]
-      # - notify_on_success:
-      #       requires:
-      #         - test-frontend
-      #         - test-backend
-      #         - scan-frontend
-      #         - scan-backend
-      #         - deploy-infrastructure
       - deploy-infrastructure:
            requires: [test-frontend, test-backend, scan-frontend, scan-backend]
            filters:
@@ -511,3 +504,6 @@ workflows:
           requires: [smoke-test]
       - cleanup:
           requires: [cloudfront-update]
+      - notify_on_success:
+            requires:
+              - cleanup
