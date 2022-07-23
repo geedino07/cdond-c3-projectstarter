@@ -417,9 +417,10 @@ jobs:
       - run:
           name: Install dependencies / save old workflow ID to kvdb.io
           command: |
-            export OLD_WORKFLOW_ID=$(aws cloudformation \
-            list-exports --query "Exports[?Name==\'WorkflowID\'].value" \
+            export OldWorkflowID=$(aws cloudformation \
+            list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
             --no-paginate --output text)
+
             echo "Old workflow ID: ${OLD_WORKFLOW_ID}"
             curl https://kvdb.io/S3PHD4fDhjYCxQmN9BkJ9r/old_workflow_id -d "${OLD_WORKFLOW_ID}"
       - run:
@@ -431,7 +432,36 @@ jobs:
            --stack-name InitialStack
       - destroy_environment
       - revert-migrations
-      # Here's where you will add some code to rollback on failure   
+
+  cleanup:
+    docker:
+      - image: amazon/aws-cli 
+    steps:
+      - checkout 
+      - run:
+          name: Get old stack workflow id
+          command: |
+            # Fetch the Old workflow ID
+            export OldWorkflowID=$(aws cloudformation \
+                    list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+                    --no-paginate --output text)
+            echo OldWorkflowID: "${OldWorkflowID}"
+            echo CIRCLE_WORKFLOW_ID: "${CIRCLE_WORKFLOW_ID:0:7}"
+            # Fetch the stack names          
+            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+                    --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
+            echo Stack names: "${STACKS[@]}" 
+      - run:
+          name: Remove old stacks and files
+          command: |
+            if [[ "${CIRCLE_WORKFLOW_ID:0:7}" =~ "${OldWorkflowID}" ]]
+            then
+            aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}
+            fi
+      - destroy_environment
+      - revert-migrations        # Here's where you will add some code to rollback on failure   
 
   notify_on_success:
     docker:
@@ -479,5 +509,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      # - cleanup:
-      #     requires: [cloudfront-update]
+      - cleanup:
+          requires: [cloudfront-update]
