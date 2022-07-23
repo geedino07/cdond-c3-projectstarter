@@ -383,7 +383,6 @@ jobs:
             --output text)
             echo "${BACKEND_IP}"
             
-
             # Fetch and prepare the BACKEND_IP env var
 
             export API_URL="http://${BACKEND_IP}:3030"
