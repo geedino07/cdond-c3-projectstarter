@@ -460,6 +460,7 @@ jobs:
           command: |
             export OldWorkflowID=$(curl --insecure https://kvdb.io/S3PHD4fDhjYCxQmN9BkJ9r/old_workflow_id)
             echo OldWorkflowID: "${OldWorkflowID}"
+            echo CircleciWorkflowID: "${CIRCLE_WORKFLOW_ID:0:7}"
 
             export STACKS=($(aws cloudformation list-stacks  \
             --query "StackSummaries[*].StackName"  \
@@ -467,11 +468,14 @@ jobs:
             
             echo Stack names: "${STACKS[@]}"
 
-            if [[ "${STACKS[@]}" =~"${OldWorkflowID}" ]]
+            if [[ "${CIRCLE_WORKFLOW_ID:0:7}}" != "${OldWorkflowID}" ]]
             then
+              echo "--------------------Delete Confirmed-----------------"
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}
+            else
+              echo"---------------------cannot cleanup--------------------"
             fi
       - destroy_environment
       - revert-migrations        # Here's where you will add some code to rollback on failure   
