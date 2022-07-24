@@ -477,8 +477,8 @@ jobs:
             else
               echo"---------------------cannot cleanup--------------------"
             fi
-      - destroy_environment
-      - revert-migrations        # Here's where you will add some code to rollback on failure   
+      # - destroy_environment
+      # - revert-migrations        # Here's where you will add some code to rollback on failure   
 
   notify_on_success:
     docker:
