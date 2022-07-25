@@ -454,18 +454,11 @@ jobs:
 
   smoke-test:
     docker:
-      - image: python:3.10-alpine3.16     # Lightweight Docker image 
+      - image: cimg/base:stable     # Lightweight Docker image 
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
-      # - install_awscli   #1
-      # - install_nodejs    #2
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update nodejs npm curl
-            pip install awscli
+      - install_awscli
+      - install_nodejs
       - run:
           name: Get backend url and do Backend Smoke Test
           command: |
