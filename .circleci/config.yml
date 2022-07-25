@@ -235,7 +235,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["e1:08:a0:c5:07:2a:65:ff:23:64:f0:7c:19:9f:ad:69"] 
+          fingerprints: ["e1:08:a0:c5:07:2a:65:ff:23:64:f0:7c:19:9f:ad:69"]
       - attach_workspace:
           at: ~/
       - run:
@@ -247,7 +247,7 @@ jobs:
           command: |         
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
-            cat .circleci/ansible/inventory.txt
+            cat inventory.txt
       #- run:
        #   name: Install node exporter
        #   command: |
