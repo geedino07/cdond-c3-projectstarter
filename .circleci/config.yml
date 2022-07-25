@@ -245,9 +245,9 @@ jobs:
       - run:
           name: Configure server
           command: |         
-            cd ~/project/.circleci/ansible
+            cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
-            cat ~/project/.circleci/ansible/inventory.txt
+            cat .circleci/ansible/inventory.txt
       #- run:
        #   name: Install node exporter
        #   command: |
