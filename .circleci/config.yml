@@ -555,12 +555,12 @@ jobs:
 
             if [[ "${CIRCLE_WORKFLOW_ID:0:7}]" != "${OldWorkflowID}" ]]
             then
-              echo "--------------------Delete Confirmed-------------------------"
+              echo "--------------------Delete Confirmed---------------------------"
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
             else
-              echo"---------------------cannot cleanup----------------------------"
+              echo"---------------------cannot cleanup------------------------------"
             fi
       # - destroy_environment
       # - revert-migrations        # Here's where you will add some code to rollback on failure   
